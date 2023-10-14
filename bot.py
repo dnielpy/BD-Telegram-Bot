@@ -20,10 +20,7 @@ logging.basicConfig(
 )
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    if update.effective_user.id == my_id:
-        await context.bot.send_message(chat_id=update.effective_chat.id, text=update.effective_chat.id)
-    else:
-        await context.bot.send_message(chat_id=update.effective_chat.id, text="I'm a bot, please talk to me!")
+    await context.bot.send_message(chat_id=update.effective_chat.id, text="Hola! Bienvenido al Servicio de Gestión de Ventas de Armando Flavio Buenadela ☘️.   \n\nSi aún no eres un vendedor, pulsa aqui: /addseller ")
 
 async def newClient(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if update.effective_user.id == my_id:
@@ -40,7 +37,7 @@ async def newClient(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
         reply_markup = InlineKeyboardMarkup(keyboard)
 
-        await context.  bot.send_message(chat_id=group_id, text="🟢Nuevo usuario ha contactado🟢", reply_markup=reply_markup)
+        await context.  bot.send_message(chat_id=group_id, text="Nuevo usuario ha contactado⚡️", reply_markup=reply_markup)
 
     else:
         await context.bot.send_message(chat_id=update.effective_chat.id, text="No estás autorizado a usar esta función")
@@ -116,13 +113,9 @@ async def report(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await context.bot.send_message(chat_id=update.effective_chat.id, text=f"⚡️ Reporte ⚡️ \nTotal de usuarios que han contactado 💰: {total_usuarios}\nVendedor con más ventas 🎁: {vendedor_con_mas_ventas}")
 
 async def addSeller(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    password_input = update.message.text[11:]  # Extraer la contraseña ingresada
-    if password_input == str(password):
-        repartidores.append(update.effective_user.name)
-        Ventas[update.effective_user.name] = 0
-        await context.bot.send_message(chat_id=update.effective_chat.id, text="Vendedor agregado correctamente. Se recomienda hacer un /update")
-    else:
-        await context.bot.send_message(chat_id=update.effective_chat.id, text="Contraseña incorrecta")
+    repartidores.append(update.effective_user.name)
+    Ventas[update.effective_user.name] = 0
+    await context.bot.send_message(chat_id=update.effective_chat.id, text="⚡️ Felicidades! Ahora formas parte de nuestro Equipo de Ventas⚡️ . \n\nPulsa sobre el siguiente enlace para entrar al grupo de Atención a Ventas y esperar por nuevos pedidos de usuarios:\n\nhttps://t.me/+iUZEPvlzJqJjOTcx")
 
     #agregar el vendedor a la base de datos
     # Conexión a la base de datos
