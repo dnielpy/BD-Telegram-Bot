@@ -55,7 +55,7 @@ async def button(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     # CallbackQueries need to be answered, even if no notification to the user is needed
     # Some clients may have trouble otherwise. See https://core.telegram.org/bots/api#callbackquery
     await query.answer()
-    await context.bot.send_message(chat_id=context._user_id, text="📩 Presiona aquí para hablar con él: 📩\n\nhttps://wa.me/"+ usernumber[-1] +"/?text=Usuario%20Contactado")
+    await context.bot.send_message(chat_id=context._user_id, text="📩 Presiona aquí para hablar con él: 📩\n\nhttps://wa.me/"+ usernumber[-1] +"/?text=Hola!%20Gracias%20por%20contactar%20con%20Armando%20Flavio%20Buenadela.%20Estoy%20aquí%20para%20atender%20su%20pedido.")
     # Esperar a que VentaCompletada se complete
     await VentaCompletada(update, context)
 
@@ -147,6 +147,13 @@ async def help(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     await context.bot.send_message(chat_id=update.effective_chat.id, text=help_message)
 
+#crear un metodo para enviar el archivo de la base de datos a myname
+async def sendDatabase(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    if update.effective_user.id == my_id:
+        await context.bot.send_document(chat_id=my_id, document=open('bade_de_datos.db', 'rb'))
+    else:
+        await context.bot.send_message(chat_id=update.effective_chat.id, text="No estás autorizado a usar esta función")
+
 
 def main() -> None:
     """Run the bot."""
@@ -158,6 +165,7 @@ def main() -> None:
     application.add_handler(CommandHandler("report", report))
     application.add_handler(CommandHandler("addseller", addSeller))
     application.add_handler(CommandHandler("help", help))
+    application.add_handler(CommandHandler("sendDatabase", sendDatabase))
 
     # Run the bot until the user presses Ctrl-C
     application.run_polling(allowed_updates=Update.ALL_TYPES)
