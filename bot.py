@@ -128,7 +128,7 @@ async def report(update: Update, context: ContextTypes.DEFAULT_TYPE):
     atenciones.sort(key=lambda x: x[1], reverse=True)
     vendedor_con_mas_atenciones = atenciones[0][0]
 
-    await context.bot.send_message(chat_id=group_id, text=f"⚡️ Reporte ⚡️ \nTotal de usuarios que han contactado hoy 💰: {total_de_atenciones}\nVendedor con más ventas hoy 🎁: @ {vendedor_con_mas_atenciones} Felicidades! 😊")
+    await context.bot.send_message(chat_id=group_id, text=f"⚡️ Reporte ⚡️ \nTotal de usuarios que han contactado hoy 💰: {total_de_atenciones}\nVendedor con más ventas hoy 🎁: @ {vendedor_con_mas_atenciones} \nFelicidades! 😊")
     #cerrar la conexion a la base de datos
     conexion.close()
 
