@@ -15,8 +15,7 @@ my_id = 740635631
 my_name = "@dnielpy"
 repartidores = [my_name]
 usernumber = []
-#group_id = "-4062202920"
-group_id = '-4023709403'
+group_id = "-4062202920"
 Ventas = {}
 VentasConfirmadas = {}
 
