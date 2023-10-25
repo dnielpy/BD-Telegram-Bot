@@ -118,11 +118,69 @@ async def report(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     await context.bot.send_message(chat_id=update.effective_chat.id, text=f"⚡️ Reporte ⚡️ \nTotal de usuarios que han contactado 💰: {total_usuarios}\nVendedor con más ventas 🎁: {vendedor_con_mas_ventas}")
 
+
+async def dailyreport(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    #Tomar los datos de la base de datos
+    # Conexión a la base de datos
+    conexion = sqlite3.connect("bade_de_datos.db")
+    cursor = conexion.cursor()
+    cursor.execute("SELECT * FROM Atenciones")
+    atenciones = cursor.fetchall()
+    
+    total_de_atenciones = 0
+    for i in atenciones:
+        total_de_atenciones += i[1]
+
+    atenciones.sort(key=lambda x: x[1], reverse=True)
+    vendedor_con_mas_atenciones = atenciones[0][0]
+
+    await context.bot.send_message(chat_id=group_id, text=f"⚡️ Reporte ⚡️ \nTotal de usuarios que han contactado en el dia 💰: {total_de_atenciones}\nVendedor con más ventas en el dia 🎁: {vendedor_con_mas_atenciones}")
+
+
+#craer un metodo para escribir en un txt los datos de la base de datos
+async def CerrarDia(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    #llamar a la funcion report para obtener los datos
+    dailyreport(update, context)
+    #obtener la fecha actual
+    fecha = time.strftime("%d/%m/%y")
+    #Conexión a la base de datos
+    conexion = sqlite3.connect("bade_de_datos.db")
+    cursor = conexion.cursor()
+    cursor.execute("SELECT * FROM Atenciones")
+    atenciones = cursor.fetchall()
+    
+    total_de_atenciones = 0
+    for i in atenciones:
+        total_de_atenciones += i[1]
+
+    texto_a_escribir = fecha + "\nVendedores: \n\n" + str(atenciones) + "\nTotal de usuarios que han contactado: " + str(total_de_atenciones)
+    #agregar el texto al txt llamado "reporte" junto con al texto que ya existe
+    with open("reporte.txt", "a") as myfile:
+        myfile.write("\n\n" + texto_a_escribir)
+    myfile.close()
+    conexion.close()
+    
+    #Asignar el valor de 0 a las ventas de cada vendedor en la base de datos
+    # Conexión a la base de datos
+    conexion = sqlite3.connect("bade_de_datos.db")
+    cursor = conexion.cursor()
+    cursor.execute("SELECT * FROM Atenciones")
+    atenciones = cursor.fetchall()
+    for i in atenciones:
+        cursor.execute("DELETE FROM Atenciones WHERE vendedor = ?", (i[0],))
+        cursor.execute("INSERT INTO Atenciones VALUES (?, ?)", (i[0], 0))
+    conexion.commit()
+    conexion.close()
+    
+    await context.bot.send_message(chat_id=update.effective_chat.id, text="Reporte guardado en reporte.txt")
+    #Enviar el archivo de texto a myname
+    await context.bot.send_document(chat_id=my_id, document=open('reporte.txt', 'rb'))
+
 async def AgregarVendedor(update: Update, context: ContextTypes.DEFAULT_TYPE):
     repartidores.append(update.effective_user.name)
     Ventas[update.effective_user.name] = 0
-    await context.bot.send_message(chat_id=update.effective_chat.id, text="⚡️ Felicidades! Ahora formas parte de nuestro Equipo de Ventas⚡️ . \n\nPulsa sobre el siguiente enlace para entrar al grupo de Atención a Ventas y esperar por nuevos pedidos de usuarios:\n\nhttps://t.me/+iUZEPvlzJqJjOTcx")
-
+    await context.bot.send_message(chat_id=update.effective_chat.id, text="⚡️ Felicidades! Ahora formas parte de nuestro Equipo de Ventas⚡️")
+    
     #agregar el vendedor a la base de datos
     # Conexión a la base de datos
     conexion = sqlite3.connect("bade_de_datos.db")
@@ -206,9 +264,12 @@ def main() -> None:
     application.add_handler(CallbackQueryHandler(button))
     application.add_handler(CommandHandler("NuevoCliente", NuevoCliente))
     application.add_handler(CommandHandler("report", report))
+    application.add_handler(CommandHandler("dailyreport", dailyreport))
     application.add_handler(CommandHandler("AgregarVendedor", AgregarVendedor))
     application.add_handler(CommandHandler("Ayuda", help))
     application.add_handler(CommandHandler("EnviarBD", EnviarBD))
+    application.add_handler(CommandHandler("CerrarDia", CerrarDia))
+    
     application.add_handler(MessageHandler(filters.PHOTO & (~filters.COMMAND), VentaCompletada))
 
 

@@ -15,7 +15,8 @@ my_id = 740635631
 my_name = "@dnielpy"
 repartidores = [my_name]
 usernumber = []
-group_id = "-4062202920"
+#group_id = "-4062202920"
+group_id = '-4023709403'
 Ventas = {}
 VentasConfirmadas = {}
 
@@ -114,15 +115,67 @@ async def AtencionCompletada(update: Update, context: ContextTypes.DEFAULT_TYPE)
     conexion.close()
 
 async def report(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    total_usuarios = len(usernumber)
-    vendedor_con_mas_ventas = max(Ventas, key=Ventas.get)
+    #Tomar los datos de la base de datos
+    # Conexión a la base de datos
+    conexion = sqlite3.connect("bade_de_datos.db")
+    cursor = conexion.cursor()
+    cursor.execute("SELECT * FROM Atenciones")
+    atenciones = cursor.fetchall()
+    
+    total_de_atenciones = 0
+    for i in atenciones:
+        total_de_atenciones += i[1]
 
-    await context.bot.send_message(chat_id=update.effective_chat.id, text=f"⚡️ Reporte ⚡️ \nTotal de usuarios que han contactado 💰: {total_usuarios}\nVendedor con más ventas 🎁: {vendedor_con_mas_ventas}")
+    atenciones.sort(key=lambda x: x[1], reverse=True)
+    vendedor_con_mas_atenciones = atenciones[0][0]
+
+    await context.bot.send_message(chat_id=group_id, text=f"⚡️ Reporte ⚡️ \nTotal de usuarios que han contactado 💰: {total_de_atenciones}\nVendedor con más ventas 🎁: {vendedor_con_mas_atenciones}")
+    #cerrar la conexion a la base de datos
+    conexion.close()
+
+async def CerrarDia(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    #llamar a la funcion report para obtener los datos
+    await report(update, context)
+    #obtener la fecha actual
+    fecha = time.strftime("%d/%m/%y")
+    #Conexión a la base de datos
+    conexion = sqlite3.connect("bade_de_datos.db")
+    cursor = conexion.cursor()
+    cursor.execute("SELECT * FROM Atenciones")
+    atenciones = cursor.fetchall()
+    
+    total_de_atenciones = 0
+    for i in atenciones:
+        total_de_atenciones += i[1]
+
+    texto_a_escribir = fecha + "\nVendedores: \n\n" + str(atenciones) + "\nTotal de usuarios que han contactado: " + str(total_de_atenciones)
+    #agregar el texto al txt llamado "reporte" junto con al texto que ya existe
+    with open("reporte.txt", "a") as myfile:
+        myfile.write("\n\n" + texto_a_escribir)
+    myfile.close()
+    conexion.close()
+    
+    #Asignar el valor de 0 a las ventas de cada vendedor en la base de datos
+    # Conexión a la base de datos
+    conexion = sqlite3.connect("bade_de_datos.db")
+    cursor = conexion.cursor()
+    cursor.execute("SELECT * FROM Atenciones")
+    atenciones = cursor.fetchall()
+    for i in atenciones:
+        cursor.execute("DELETE FROM Atenciones WHERE vendedor = ?", (i[0],))
+        cursor.execute("INSERT INTO Atenciones VALUES (?, ?)", (i[0], 0))
+    conexion.commit()
+    conexion.close()
+    
+    await context.bot.send_message(chat_id=update.effective_chat.id, text="Reporte guardado en reporte.txt")
+    #Enviar el archivo de texto a myname
+    await context.bot.send_document(chat_id=my_id, document=open('reporte.txt', 'rb'))
+
 
 async def AgregarVendedor(update: Update, context: ContextTypes.DEFAULT_TYPE):
     repartidores.append(update.effective_user.name)
     Ventas[update.effective_user.name] = 0
-    await context.bot.send_message(chat_id=update.effective_chat.id, text="⚡️ Felicidades! Ahora formas parte de nuestro Equipo de Ventas⚡️ . \n\nPulsa sobre el siguiente enlace para entrar al grupo de Atención a Ventas y esperar por nuevos pedidos de usuarios:\n\nhttps://t.me/+iUZEPvlzJqJjOTcx")
+    await context.bot.send_message(chat_id=update.effective_chat.id, text="⚡️ Felicidades! Ahora formas parte de nuestro Equipo de Ventas⚡️")
 
     #agregar el vendedor a la base de datos
     # Conexión a la base de datos
@@ -137,15 +190,6 @@ async def AgregarVendedor(update: Update, context: ContextTypes.DEFAULT_TYPE):
     cursor.execute("INSERT INTO Vendedores VALUES (?)", (username,))
     conexion.commit()
     conexion.close()
-
-
-async def help(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    help_message = "⚡️ Lista de comandos disponibles ⚡️\n\n" \
-                       "/report: Muestra un informe con el total de usuarios que han contactado y el vendedor con más ventas.\n" \
-                       "/AgregarVendedor [Contraseña]: Agrega un nuevo vendedor a la lista de repartidores.\n" \
-                       "/help: Muestra esta lista de comandos.\n" \
-
-    await context.bot.send_message(chat_id=update.effective_chat.id, text=help_message)
 
 #crear un metodo para enviar el archivo de la base de datos a myname
 async def EnviarBD(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -210,6 +254,8 @@ def main() -> None:
     application.add_handler(CommandHandler("AgregarVendedor", AgregarVendedor))
     application.add_handler(CommandHandler("Ayuda", help))
     application.add_handler(CommandHandler("EnviarBD", EnviarBD))
+    application.add_handler(CommandHandler("CerrarDia", CerrarDia))
+
     application.add_handler(MessageHandler(filters.PHOTO & (~filters.COMMAND), VentaCompletada))
 
 
