@@ -34,7 +34,6 @@ async def NuevoCliente(update: Update, context: ContextTypes.DEFAULT_TYPE):
             texto_sin_newclient = dirty_message.replace("/NuevoCliente ", "")
             texto_sin_newclient = texto_sin_newclient.replace("+", "")
             texto_sin_newclient = texto_sin_newclient.replace(" ", "")
-            print(texto_sin_newclient)
             usernumber.append(texto_sin_newclient)
         getNumber()
         keyboard = [

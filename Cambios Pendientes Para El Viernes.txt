@@ -1,4 +1,4 @@
-- Corregir el que yo pueda mandar el numero asi: +52 5552 52 52552 (con + y espacios) y el bot lo corrija
+Listo - Corregir el que yo pueda mandar el numero asi: +52 5552 52 52552 (con + y espacios) y el bot lo corrija
 - Limpiar la BD de datos innecesarios
 - Poner el contador de atenciones Diario en vez de semanal
 - Corregir el mensaje de bienvenida (muestra un enlace expirado)
