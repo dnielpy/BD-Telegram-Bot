@@ -7,7 +7,10 @@ from telegram.ext import filters, MessageHandler, Application, CallbackQueryHand
 
 
 password = 123456
+#Token real
 token = '6195133432:AAGQPBBZzA2uaB1d20OkjcrrMQWHTJCBE9w'
+
+
 my_id = 740635631
 my_name = "@dnielpy"
 repartidores = [my_name]
@@ -30,6 +33,8 @@ async def NuevoCliente(update: Update, context: ContextTypes.DEFAULT_TYPE):
         def getNumber():
             dirty_message = str(update.message.text)
             texto_sin_newclient = dirty_message.replace("/NuevoCliente ", "")
+            texto_sin_newclient = texto_sin_newclient.replace("+", "")
+            texto_sin_newclient = texto_sin_newclient.replace(" ", "")
             usernumber.append(texto_sin_newclient)
         getNumber()
         keyboard = [
