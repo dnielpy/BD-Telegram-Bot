@@ -1,7 +1,0 @@
-
-
-25/10/23
-Vendedores: 
-
-[('@dnielpy', 2), ('.', 4), ('OG Buenadela', 2), ('Jordi', 1), ('Alm@ Mangas', 12), ('@Laeriza', 5)]
-Total de usuarios que han contactado: 26
