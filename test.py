@@ -25,7 +25,8 @@ logging.basicConfig(
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await context.bot.send_message(chat_id=update.effective_chat.id, text="Hola! Bienvenido al Servicio de Gestión de Ventas de Armando Flavio Buenadela ☘️.   \n\nSi aún no eres un vendedor, pulsa aqui: /AgregarVendedor ")
-    print(update.effective_chat.id)
+    print(update.effective_user.id)
+
 
 async def NuevoCliente(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if update.effective_user.id == my_id:

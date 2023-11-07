@@ -26,7 +26,6 @@ logging.basicConfig(
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await context.bot.send_message(chat_id=update.effective_chat.id, text="Hola! Bienvenido al Servicio de Gestión de Ventas de Armando Flavio Buenadela ☘️.   \n\nSi aún no eres un vendedor, pulsa aqui: /AgregarVendedor ")
-    print(update.effective_chat.id)
 
 async def NuevoCliente(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if update.effective_user.id == my_id:
@@ -82,7 +81,7 @@ async def button(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     # Generar el mensaje final con el tiempo transcurrido y actualizar el mensaje original
     message_text = f"Usuario Atendido por {update.effective_user.name} ✅\n" \
                    f"Tiempo de atención: {elapsed_time:.2f} segundos\n" \
-                   f"Tiene {userventasstr} atenciones en esta semana"
+                   f"Tiene {userventasstr} atenciones hoy"
 
     await query.edit_message_text(text=message_text)
     conexion.commit()

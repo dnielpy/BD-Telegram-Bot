@@ -1,0 +1,43 @@
+
+
+26/10/23
+Vendedores: 
+
+[('.', 0), ('Alm@ Mangas', 0), ('@dnielpy', 1), ('OG Buenadela', 3), ('Jordi', 6), ('@Laeriza', 7)]
+Total de usuarios que han contactado: 17
+
+28/10/23
+Vendedores: 
+
+[('.', 0), ('Alm@ Mangas', 0), ('@dnielpy', 0), ('OG Buenadela', 6), ('@Laeriza', 5), ('Jordi', 4), ('@MariashBuenadela', 3)]
+Total de usuarios que han contactado: 18
+
+29/10/23
+Vendedores: 
+
+[('.', 0), ('Alm@ Mangas', 0), ('@dnielpy', 0), ('OG Buenadela', 0), ('Jordi', 0), ('@MariashBuenadela', 2), ('@Laeriza', 7)]
+Total de usuarios que han contactado: 9
+
+30/10/23
+Vendedores: 
+
+[('.', 0), ('Alm@ Mangas', 0), ('@dnielpy', 0), ('OG Buenadela', 0), ('@MariashBuenadela', 0), ('Jordi', 1), ('@Laeriza', 9)]
+Total de usuarios que han contactado: 10
+
+01/11/23
+Vendedores: 
+
+[('.', 0), ('Alm@ Mangas', 0), ('@dnielpy', 0), ('OG Buenadela', 0), ('Jordi', 9), ('@MariashBuenadela', 1), ('@Laeriza', 7)]
+Total de usuarios que han contactado: 17
+
+02/11/23
+Vendedores: 
+
+[('.', 0), ('Alm@ Mangas', 0), ('@dnielpy', 0), ('OG Buenadela', 0), ('Armando Flavio Buenadela', 1), ('@MariashBuenadela', 2), ('Jordi', 7), ('@Laeriza', 3)]
+Total de usuarios que han contactado: 13
+
+03/11/23
+Vendedores: 
+
+[('.', 0), ('Alm@ Mangas', 0), ('@dnielpy', 0), ('OG Buenadela', 0), ('Jordi', 3), ('@MariashBuenadela', 2), ('Armando Flavio Buenadela', 10), ('@Laeriza', 14)]
+Total de usuarios que han contactado: 29
